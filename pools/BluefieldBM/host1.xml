@@ -1,0 +1,14 @@
+<slavemachine>
+    <params>
+        <param name="hostname" value="10.137.2.1" />
+        <param name="machine_type" value="baremetal" />
+        <param name="order" value="1" />
+    </params>
+    <interfaces>
+        <eth id="ens1f0" label="uplink">
+            <params>
+		    <param name="hwaddr" value="fa:20:1c:68:5d:6b" />
+            </params>
+        </eth>
+    </interfaces>
+</slavemachine>

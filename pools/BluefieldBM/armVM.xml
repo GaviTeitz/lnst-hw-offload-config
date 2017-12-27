@@ -1,0 +1,19 @@
+<slavemachine>
+    <params>
+        <param name="hostname" value="10.137.2.5"/>
+	<param name="ovs_support" value="true" />
+        <param name="machine_type" value="guest"/>
+    </params>
+    <interfaces>
+        <eth id="ens6" label="ecpf">
+            <params>
+                <param name="hwaddr" value="24:8a:07:ad:7a:8b"/>
+            </params>
+        </eth>
+        <eth id="rep-0" label="host-pf-rep">
+            <params>
+                <param name="hwaddr" value="1a:9d:79:0f:33:b6"/>
+            </params>
+        </eth>
+    </interfaces>
+</slavemachine>
