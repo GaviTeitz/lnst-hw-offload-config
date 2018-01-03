@@ -69,12 +69,12 @@ def verify_tc_rules(proto):
 
 if ipv in ('ipv4', 'both'):
     ping()
-    verify_tc_rules('ip')
+#    verify_tc_rules('ip')
     for size in (200, 400, 1000):
         ping({'size': size})
 
 if ipv in ('ipv6', 'both'):
     ping6()
-    verify_tc_rules('ipv6')
     for size in (200, 400, 1000):
         ping6({'size': size})
+    verify_tc_rules('ipv6')
