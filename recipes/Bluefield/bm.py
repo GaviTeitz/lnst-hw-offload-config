@@ -21,7 +21,6 @@ h2.sync_resources(modules=["Iperf"])
 # ------
 
 ipv = ctl.get_alias("ipv")
-do_iperf = ctl.get_alias("iperf")
 
 h1_hostnic = h1.get_interface("ens1f0")
 h1_mac = h1_hostnic.get_hwaddr()
@@ -55,33 +54,27 @@ def ping6(options={}):
     ping_mod6 = ctl.get_module("Icmp6Ping", options=options)
     h1.run(ping_mod6, timeout=ping_timeout)
 
-'''
+
 def verify_tc_rules(proto):
-    m = tl.find_tc_rule(h1, 'tap1', g1_mac, g2_mac, proto, 'mirred')
-    if m:
-        tl.custom(h1, "TC rule %s vm1->vm2" % proto, opts=m)
-    else:
-        tl.custom(h1, "TC rule %s vm1->vm2" % proto, 'ERROR: cannot find tc rule')
+    def verify_tc_rule(ovsPortName, src_mac, dst_mac, srcName, dstName):
+        m = tl.find_tc_rule(g1, ovsPortName, src_mac, dst_mac, proto, 'mirred')
+        if m:
+            tl.custom(h1, 'TC rule ' + str(proto) + ' ' + str(srcName) + ' --> ' + str(dstName), opts=m)
+        else:
+            tl.custom(h1, 'TC rule ' + str(proto) + ' ' + str(srcName) + ' --> ' + str(dstName), 'ERROR: cannot find tc rule')
 
-    m = tl.find_tc_rule(h1, 'tap2', g2_mac, g1_mac, proto, 'mirred')
-    if m:
-        tl.custom(h1, "TC rule %s vm2->vm1" % proto, opts=m)
-    else:
-        tl.custom(h1, "TC rule %s vm2->vm1" % proto, 'ERROR: cannot find tc rule')
+    verify_tc_rule('rep-0', h1_mac, h2_mac, 'Host 1', 'Host 2')
+    verify_tc_rule('ens6',  h2_mac, h1_mac, 'Host 2', 'Host 1')
 
-'''
+
 if ipv in ('ipv4', 'both'):
     ping()
-#    verify_tc_rules('ip')
+    verify_tc_rules('ip')
     for size in (200, 400, 1000):
         ping({'size': size})
 
 if ipv in ('ipv6', 'both'):
     ping6()
- #   verify_tc_rules('ipv6')
+    verify_tc_rules('ipv6')
     for size in (200, 400, 1000):
         ping6({'size': size})
-
-#if do_iperf:
-#    tl.iperf(g1_guestnic, g2_guestnic, 30, 'vm1->vm2')
-#    tl.iperf(g1_guestnic, g2_guestnic, 30, 'vm1->vm2 SCTP', iperf3=True, iperf_opts='--sctp')
