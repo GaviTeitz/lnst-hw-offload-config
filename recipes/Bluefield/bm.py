@@ -1,20 +1,18 @@
 from lnst.Controller.Task import ctl
-import sys
-sys.path.append('../ovs_offload')
-from Testlib import Testlib
+from BluefieldTestlib import BluefieldTestlib
 
 # ------
 # SETUP
 # ------
 
-tl = Testlib(ctl)
+tl = BluefieldTestlib(ctl)
 
 h1 = ctl.get_host("host1")
 h2 = ctl.get_host("host2")
 g1 = ctl.get_host("guest1")
 
-h1.sync_resources(modules=["IcmpPing", "Icmp6Ping", "Iperf"])
-h2.sync_resources(modules=["Iperf"])
+tl.syncTestModules({h1 : ["IcmpPing", "Icmp6Ping", "Iperf"],
+                    h2 : ["Iperf"]})
 
 # ------
 # TESTS
@@ -69,12 +67,12 @@ def verify_tc_rules(proto):
 
 if ipv in ('ipv4', 'both'):
     ping()
-#    verify_tc_rules('ip')
+    verify_tc_rules('ipv4')
     for size in (200, 400, 1000):
         ping({'size': size})
 
 if ipv in ('ipv6', 'both'):
     ping6()
+    verify_tc_rules('ipv6')
     for size in (200, 400, 1000):
         ping6({'size': size})
-    verify_tc_rules('ipv6')
