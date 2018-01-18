@@ -17,7 +17,18 @@ class BluefieldTestlib(Testlib):
         if opts:
             options.update(opts)
         if err_msg:
-            options["fail"] = "yes"
-            options["msg"] = err_msg
-        custom_mod = self._ctl.get_module("Custom", options=options)
+            options['fail'] = 'yes'
+            options['msg'] = err_msg
+        custom_mod = self._ctl.get_module('Custom', options=options)
         host.run(custom_mod, desc=desc)
+
+    def ping(self, host, srcInterface, dstIp, pingModule = 'IcmpPing', pingCount = 30, pingInterval = 0.2, pingTimeout = 10, options = {}, runInBackground = False, backgroundDelay = 1):
+        options = dict(options)
+        options.update({'addr'     : dstIp,
+                        'count'    : pingCount,
+                        'iface'    : srcInterface,
+                        'interval' : pingInterval
+        })
+        host.run(self._ctl.get_module(pingModule, options=options), timeout=pingTimeout, bg=runInBackground)
+        if runInBackground:
+            self._ctl.wait(backgroundDelay)

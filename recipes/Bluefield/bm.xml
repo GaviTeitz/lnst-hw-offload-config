@@ -1,9 +1,9 @@
 <lnstrecipe>
     <define>
-        <alias name="ipv"   value="both" />
-        <alias name="iperf" value="yes" />
-        <alias name="net"   value="1.1.5"/>
-	<alias name="net6" value="fc00:0:0:0"/>
+        <alias name="ipv"    value="both" />
+        <alias name="iperf"  value="yes" />
+        <alias name="net"    value="1.1.5"/>
+        <alias name="net6"   value="fc00:0:0:0"/>
     </define>
     <network>
         <host id="host1">
