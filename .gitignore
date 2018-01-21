@@ -1,3 +1,4 @@
 logs
+pretty-fs-dump
 *.pyc
 *.log
