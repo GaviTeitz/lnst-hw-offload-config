@@ -2,6 +2,7 @@
     <define>
         <alias name="ipv"    value="both" />
         <alias name="iperf"  value="yes" />
+        <alias name="mstDev" value="/dev/mst/mt4121_pciconf0"/>
         <alias name="net"    value="1.1.5"/>
         <alias name="net6"   value="fc00:0:0:0"/>
     </define>

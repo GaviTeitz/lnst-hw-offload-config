@@ -1,5 +1,5 @@
 from lnst.Controller.Task import ctl
-from BluefieldTestlib import BluefieldTestlib
+from BluefieldTestlib import BluefieldTestlib, L2ForwardingRule
 
 # ------
 # SETUP
@@ -38,6 +38,9 @@ def verify_tc_rules(proto):
 def verifyPing(srcInterface, dstIp, pingModule, tcProto):
     tl.ping(h1, srcInterface, dstIp, pingModule, runInBackground=True)
 
+    ethType = '0x0800' if pingModule is 'IcmpPing' else '0x86dd'
+    tl.verifyRulesAreInHw(h1, 0x2, [L2ForwardingRule('Host 1 --> Host 2', h1_mac, h2_mac, 'uplink', ethType),
+                                    L2ForwardingRule('Host 2 --> Host 1', h2_mac, h1_mac, 'vport0', ethType)])
     verify_tc_rules(tcProto)
 
     for size in (200, 400, 1000):
